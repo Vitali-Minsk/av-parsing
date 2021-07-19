@@ -1,0 +1,25 @@
+{
+  "name": "parcer-av",
+  "version": "1.0.0",
+  "description": "parsing advertisments from av.by",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Vitali-Minsk"
+  },
+  "keywords": [
+    "av"
+  ],
+  "author": "vitali buralou <vitali.burakou@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "node-fetch": "^2.6.1",
+    "puppeteer": "^10.1.0",
+    "request": "^2.88.2",
+    "xmlhttprequest": "^1.8.0"
+  }
+}
