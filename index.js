@@ -4,6 +4,8 @@ var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 const url = 'https://cars.av.by/filter?year[min]=2000&price_usd[max]=3000&place_city[0]=2&place_region=1005&seller_type[0]=1&sort=4';
 
+let tempAdv;
+
 async function fetchProductList(url) {
 
     const browser = await puppeteer.launch({ 
@@ -12,6 +14,7 @@ async function fetchProductList(url) {
     });
     
     const page = await browser.newPage();
+    await page.setDefaultNavigationTimeout(0); 
     await page.goto(url, { waitUntil: 'networkidle2' });
     
     const parsedAdv = await page.evaluate(() => {
@@ -40,7 +43,7 @@ async function fetchProductList(url) {
             car.city = currentNodeCar.querySelector('.listing-item__location').textContent;
             car.price = currentNodeCar.querySelector('.listing-item__priceusd').textContent.match(/\d*\s?\d*\s[$]/).toString();
             car.date = dateConverter(currentNodeCar.querySelector('.listing-item__date').textContent);
-            car.dateOrigin = currentNodeCar.querySelector('.listing-item__date').textContent;
+            car.link = currentNodeCar.querySelector('.listing-item__link').href;
 
             carsList = carsList.concat(car)
         }
@@ -57,7 +60,7 @@ async function fetchProductList(url) {
                 result = `${day}.${currentMonth}.${currentYear}`;
                 return result;
             }
-            if (/(\d+\sминут)|(час)|(только что)/.test(date)) {
+            if (/(\d+\sминут)|(час)|(только что)|(минуту)/.test(date)) {
                 result = `${currentDay}.${currentMonth}.${currentYear}`;
                 return result;
             }
@@ -81,9 +84,10 @@ async function fetchProductList(url) {
 
         return carsList;
     });
-    console.log(parsedAdv, parsedAdv.length);
+    console.log(JSON.stringify(parsedAdv[0]) !== JSON.stringify(tempAdv));
 
-    sendMsg(parsedAdv[0]);
+    if (JSON.stringify(parsedAdv[0]) !== JSON.stringify(tempAdv)) sendMsg(parsedAdv[0]);
+    tempAdv = parsedAdv[0];
 
   function sendMsg(data) {
     const url = 'https://api.telegram.org/bot'+config.telegram.token+'/sendMessage';
@@ -93,7 +97,7 @@ async function fetchProductList(url) {
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify({
         chat_id: config.telegram.chat,
-        text: `Новое объявление: ${data.brand}, ${data.year}, ${data.mileage}, ${data.engine}, ${data.gearboxType}, ${data.city}, ${data.price}, ${data.date}`
+        text: `Новое объявление: ${data.brand}, ${data.year}, ${data.mileage}, ${data.engine}, ${data.gearboxType}, ${data.city}, ${data.price}, ${data.date}, ${data.link}`
     }));
 
     xhr.onload = function() {
@@ -105,7 +109,18 @@ async function fetchProductList(url) {
       };
 }
 
-    await browser.close();
+    let pages = await browser.pages()
+    await Promise.all(pages.map(page =>page.close()))
+    await browser.close()
 }
 
-fetchProductList(url);
+let intervalCounter = 0;
+let intervalCounterMax = 1000;
+let [min, max] = [3000, 10000]
+
+const intervalObj = setInterval(()=> { 
+    if (intervalCounter > intervalCounterMax) clearInterval(intervalObj);
+    fetchProductList(url); 
+    intervalCounter++;
+    console.log(intervalCounter)
+}, Math.floor(Math.random() * (max - min + 1)) + min);
