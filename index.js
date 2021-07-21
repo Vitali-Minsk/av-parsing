@@ -8,11 +8,13 @@ let tempAdv;
 
 async function fetchProductList(url) {
 
-    const browser = await puppeteer.launch({ 
-        headless: true,
-        defaultViewport: null,
-    });
-    
+    const browser = await puppeteer.launch({
+        'args' : [
+          '--no-sandbox',
+          '--disable-setuid-sandbox'
+        ]
+      });
+
     const page = await browser.newPage();
     await page.setDefaultNavigationTimeout(0); 
     await page.goto(url, { waitUntil: 'networkidle2' });
