@@ -21,14 +21,20 @@ async function fetchProductList(url) {
         'args' : [
           '--no-sandbox',
           '--disable-setuid-sandbox',
-          '--proxy-server=212.98.190.22:3128'
+        //   '--proxy-server=https=77.94.47.110:5678',
+        //   '--disable-gpu'
         ],
         headless: true,
         defaultViewport: null,
+        ignoreHTTPSErrors :true,
       });
 
     const page = await browser.newPage();
     await page.setDefaultNavigationTimeout(0); 
+    await page.authenticate({
+        username: 'brucewayne',
+        password: 'darkknight',
+      });
     await page.goto(url, { waitUntil: 'networkidle2' });
     
     const parsedAdv = await page.evaluate(() => {
