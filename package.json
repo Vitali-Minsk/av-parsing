@@ -5,7 +5,10 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": "16.4.1"
   },
   "repository": {
     "type": "git",
@@ -17,9 +20,7 @@
   "author": "vitali buralou <vitali.burakou@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "node-fetch": "^2.6.1",
     "puppeteer": "^10.1.0",
-    "request": "^2.88.2",
     "xmlhttprequest": "^1.8.0"
   }
 }

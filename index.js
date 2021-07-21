@@ -84,7 +84,6 @@ async function fetchProductList(url) {
 
         return carsList;
     });
-    console.log(JSON.stringify(parsedAdv[0]) !== JSON.stringify(tempAdv));
 
     if (JSON.stringify(parsedAdv[0]) !== JSON.stringify(tempAdv)) sendMsg(parsedAdv[0]);
     tempAdv = parsedAdv[0];
@@ -122,5 +121,4 @@ const intervalObj = setInterval(()=> {
     if (intervalCounter > intervalCounterMax) clearInterval(intervalObj);
     fetchProductList(url); 
     intervalCounter++;
-    console.log(intervalCounter)
 }, Math.floor(Math.random() * (max - min + 1)) + min);
