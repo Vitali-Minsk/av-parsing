@@ -21,7 +21,7 @@ async function fetchProductList(url) {
         'args' : [
           '--no-sandbox',
           '--disable-setuid-sandbox',
-          [ '--proxy-server=212.98.190.22:3128' ]
+          '--proxy-server=212.98.190.22:3128'
         ],
         headless: true,
         defaultViewport: null,
