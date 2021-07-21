@@ -138,6 +138,7 @@ let intervalCounterMax = 1000;
 let [min, max] = [3000, 10000]
 
 const intervalObj = setInterval(()=> { 
+    console.log(intervalCounter)
     if (intervalCounter > intervalCounterMax) clearInterval(intervalObj);
     fetchProductList(url); 
     intervalCounter++;
