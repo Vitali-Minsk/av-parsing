@@ -20,6 +20,7 @@
   "author": "vitali buralou <vitali.burakou@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.17.1",
     "puppeteer": "^10.1.0",
     "xmlhttprequest": "^1.8.0"
   }

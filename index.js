@@ -1,5 +1,14 @@
+const express = require('express');
+const app =express();
 const puppeteer = require('puppeteer');
 const config = require('./config.json');
+
+const PORT = process.env.PORT || 80; 
+
+
+
+app.listen(PORT(`Server has been started on PORT: ${PORT}`))
+
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 const url = 'https://cars.av.by/filter?year[min]=2000&price_usd[max]=3000&place_city[0]=2&place_region=1005&seller_type[0]=1&sort=4';
@@ -11,7 +20,8 @@ async function fetchProductList(url) {
     const browser = await puppeteer.launch({
         'args' : [
           '--no-sandbox',
-          '--disable-setuid-sandbox'
+          '--disable-setuid-sandbox',
+          [ '--proxy-server=212.98.190.22:3128' ]
         ],
         headless: true,
         defaultViewport: null,
