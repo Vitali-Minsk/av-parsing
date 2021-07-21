@@ -12,7 +12,9 @@ async function fetchProductList(url) {
         'args' : [
           '--no-sandbox',
           '--disable-setuid-sandbox'
-        ]
+        ],
+        headless: true,
+        defaultViewport: null,
       });
 
     const page = await browser.newPage();
