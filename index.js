@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 80;
 
 
 
-app.listen(PORT(`Server has been started on PORT: ${PORT}`))
+app.listen(PORT, () => {console.log(`Server has been started on PORT: ${PORT}`)})
 
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
