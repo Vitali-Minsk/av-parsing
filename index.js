@@ -11,9 +11,9 @@ app.listen(PORT, () => {console.log(`Server has been started on PORT: ${PORT}`)}
 
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
-const url = 'https://cars.av.by/filter?year[min]=2000&price_usd[max]=3000&place_city[0]=2&place_region=1005&seller_type[0]=1&sort=4';
+const url = 'https://cars.av.by/filter?price_usd[max]=10000&place_region[0]=1005&seller_type[0]=1&sort=4';
 
-let tempAdv;
+let tempAdv0, tempAdv1;
 
 async function fetchProductList(url) {
 
@@ -105,8 +105,10 @@ async function fetchProductList(url) {
         return carsList;
     });
 
-    if (JSON.stringify(parsedAdv[0]) !== JSON.stringify(tempAdv)) sendMsg(parsedAdv[0]);
-    tempAdv = parsedAdv[0];
+
+      if ((parsedAdv[0]).link !== tempAdv0 && parsedAdv[0].link !== tempAdv1) sendMsg(parsedAdv[0]);
+      tempAdv0 = parsedAdv[0].link;
+      tempAdv1 = parsedAdv[1].link;
 
   function sendMsg(data) {
     const url = 'https://api.telegram.org/bot'+config.telegram.token+'/sendMessage';
